@@ -35,6 +35,45 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
+        .difficulty-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.2s ease-in-out;
+        }
+        .difficulty-badge.facil {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .difficulty-badge.medio {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .difficulty-badge.dificil {
+            background-color: #fed7aa;
+            color: #9a3412;
+        }
+        .difficulty-badge.muy_dificil {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+        .difficulty-btn {
+            transition: all 0.2s ease-in-out;
+            border: none;
+            cursor: pointer;
+        }
+        .difficulty-btn.active {
+            opacity: 1;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .difficulty-btn.inactive {
+            opacity: 0.6;
+            transform: scale(1);
+            box-shadow: none;
+        }
         /* Hide scrollbar for horizontal scrolling tabs */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -132,8 +171,18 @@
         <!-- Interactive Routine Planner -->
         <section id="rutina" class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-8">
             <div class="p-6 bg-slate-800 text-white">
-                <h2 class="text-2xl font-bold mb-2">Tu Rutina Semanal</h2>
-                <p class="text-slate-300 text-sm">Navega por los días para ver tu entrenamiento. Marca los ejercicios conforme los completas.</p>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">Tu Rutina Semanal</h2>
+                        <p class="text-slate-300 text-sm">Navega por los días para ver tu entrenamiento. Marca los ejercicios conforme los completas.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="difficulty-facil" class="difficulty-badge facil px-4 py-2 rounded-lg font-semibold transition-all cursor-pointer text-sm" onclick="setDifficulty('facil')">Fácil</button>
+                        <button id="difficulty-medio" class="difficulty-badge medio px-4 py-2 rounded-lg font-semibold transition-all cursor-pointer text-sm" onclick="setDifficulty('medio')">Medio</button>
+                        <button id="difficulty-dificil" class="difficulty-badge dificil px-4 py-2 rounded-lg font-semibold transition-all cursor-pointer text-sm" onclick="setDifficulty('dificil')">Difícil</button>
+                        <button id="difficulty-muy_dificil" class="difficulty-badge muy_dificil px-4 py-2 rounded-lg font-semibold transition-all cursor-pointer text-sm" onclick="setDifficulty('muy_dificil')">Muy Difícil</button>
+                    </div>
+                </div>
             </div>
 
             <!-- Day Navigation -->
@@ -159,10 +208,50 @@
                 focus: "Pecho, Hombros, Tríceps, Cardio",
                 warmup: "Sube 3 pisos a ritmo suave. Baja en ascensor. Rotaciones articulares de hombros y muñecas (3 min).",
                 exercises: [
-                    { name: "Flexiones Clásicas (Push-ups)", reps: "3 series al fallo (-2 reps)", tips: "Mantén el abdomen apretado. Si es muy difícil, apoya rodillas o hazlas inclinadas contra la pared/cama." },
-                    { name: "Fondos en Silla (Dips)", reps: "3 series de 10-15 reps", tips: "Usa una silla firme. Codos apuntando hacia atrás, no hacia los lados." },
-                    { name: "Plancha (Plank) con toques de hombro", reps: "3 series de 40 segundos", tips: "Evita balancear la cadera al tocar tus hombros." },
-                    { name: "Finisher: Escaleras HIIT", reps: "Sube 5 pisos rápido. Ascensor. X 3 veces.", tips: "Sube de 2 en 2 escalones si te sientes con energía. Bombeo cardiovascular final." }
+                    { 
+                        name: "Flexiones Clásicas (Push-ups)", 
+                        tips: "Mantén el abdomen apretado. Si es muy difícil, apoya rodillas o hazlas inclinadas contra la pared/cama.", 
+                        image: "https://www.bulevip.com/blog/wp-content/uploads/2017/12/flexiones-de-brazos-push-up-clasico-2.jpg",
+                        difficulties: {
+                            facil: { series: 2, reps: "10-12 reps" },
+                            medio: { series: 3, reps: "al fallo (-2 reps)" },
+                            dificil: { series: 4, reps: "al fallo" },
+                            muy_dificil: { series: 5, reps: "al fallo + 10 reps" }
+                        }
+                    },
+                    { 
+                        name: "Fondos en Silla (Dips)", 
+                        tips: "Usa una silla firme. Codos apuntando hacia atrás, no hacia los lados.", 
+                        image: "https://images.unsplash.com/photo-1555291661f1-b15e81d8eff5?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "8-10 reps" },
+                            medio: { series: 3, reps: "10-15 reps" },
+                            dificil: { series: 4, reps: "12-18 reps" },
+                            muy_dificil: { series: 5, reps: "15-20 reps" }
+                        }
+                    },
+                    { 
+                        name: "Plancha (Plank) con toques de hombro", 
+                        tips: "Evita balancear la cadera al tocar tus hombros.", 
+                        image: "https://images.unsplash.com/photo-1598289505326-20d335ae76ac?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "30 segundos" },
+                            medio: { series: 3, reps: "40 segundos" },
+                            dificil: { series: 4, reps: "50 segundos" },
+                            muy_dificil: { series: 4, reps: "60 segundos" }
+                        }
+                    },
+                    { 
+                        name: "Finisher: Escaleras HIIT", 
+                        tips: "Sube de 2 en 2 escalones si te sientes con energía. Bombeo cardiovascular final.", 
+                        image: "https://images.unsplash.com/photo-1538895122582-f71ce4accf68?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "Sube 3 pisos. X 2 veces" },
+                            medio: { series: 3, reps: "Sube 5 pisos. X 3 veces" },
+                            dificil: { series: 3, reps: "Sube 7 pisos. X 3 veces" },
+                            muy_dificil: { series: 4, reps: "Sube 10 pisos. X 3 veces" }
+                        }
+                    }
                 ]
             },
             2: {
@@ -171,10 +260,50 @@
                 focus: "Piernas, Glúteos, Core",
                 warmup: "Jumping jacks (2 min) + Sentadillas sin peso (15 reps) + Zancadas dinámicas.",
                 exercises: [
-                    { name: "Sentadillas Búlgaras", reps: "3 series de 10-12 reps por pierna", tips: "Apoya el empeine trasero en una silla. Baja recto. Es el mejor ejercicio de pierna sin peso." },
-                    { name: "Zancadas Caminando (Lunges)", reps: "3 series de 20 pasos", tips: "Paso largo para enfocar glúteo, paso corto para enfocar cuádriceps." },
-                    { name: "Puente de Glúteo a una pierna", reps: "3 series de 12 reps por pierna", tips: "Aprieta el glúteo arriba por 2 segundos." },
-                    { name: "Elevación de Talones (Pantorrillas)", reps: "4 series de 20 reps", tips: "Hazlo en el borde de un escalón de tu edificio. Baja lento." }
+                    { 
+                        name: "Sentadillas Búlgaras", 
+                        tips: "Apoya el empeine trasero en una silla. Baja recto. Es el mejor ejercicio de pierna sin peso.", 
+                        image: "https://images.unsplash.com/photo-1533613220915-006f645a740f?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "8-10 reps por pierna" },
+                            medio: { series: 3, reps: "10-12 reps por pierna" },
+                            dificil: { series: 4, reps: "12-15 reps por pierna" },
+                            muy_dificil: { series: 4, reps: "15-18 reps por pierna" }
+                        }
+                    },
+                    { 
+                        name: "Zancadas Caminando (Lunges)", 
+                        tips: "Pasos largos para enfocar el glúteo; pasos cortos para enfocar los cuádriceps.", 
+                        image: "https://images.unsplash.com/photo-1434017557556-f2250ba2d7d5?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "12 pasos" },
+                            medio: { series: 3, reps: "20 pasos" },
+                            dificil: { series: 3, reps: "25 pasos" },
+                            muy_dificil: { series: 4, reps: "30 pasos" }
+                        }
+                    },
+                    { 
+                        name: "Puente de Glúteo a una pierna", 
+                        tips: "Aprieta el glúteo arriba por 2 segundos.", 
+                        image: "https://images.unsplash.com/photo-1552921154-642221f8c155?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "8-10 reps por pierna" },
+                            medio: { series: 3, reps: "12 reps por pierna" },
+                            dificil: { series: 4, reps: "15 reps por pierna" },
+                            muy_dificil: { series: 4, reps: "18 reps por pierna" }
+                        }
+                    },
+                    { 
+                        name: "Elevación de Talones (Pantorrillas)", 
+                        tips: "Hazlo en el borde de un escalón de tu edificio. Baja lento.", 
+                        image: "https://images.unsplash.com/photo-1571731956672-f2b94d7dd725?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 3, reps: "15 reps" },
+                            medio: { series: 4, reps: "20 reps" },
+                            dificil: { series: 4, reps: "25 reps" },
+                            muy_dificil: { series: 5, reps: "30 reps" }
+                        }
+                    }
                 ]
             },
             3: {
@@ -183,9 +312,39 @@
                 focus: "Cardio LISS / Resistencia Muscular",
                 warmup: "Movilidad articular general. Estiramiento dinámico de piernas.",
                 exercises: [
-                    { name: "Ascenso Continuo (Pisos 1 al 21)", reps: "1 a 2 rondas completas", tips: "El objetivo es no parar. Mantén un ritmo constante (Zona 2 de cardio). Si necesitas descansar, hazlo en los descansos de los pisos, no a mitad de escalera." },
-                    { name: "Descenso y Recuperación", reps: "Obligatorio: Bajar en ascensor", tips: "Bajar 21 pisos daña los meniscos y rodillas a largo plazo. Usa la tecnología a tu favor." },
-                    { name: "Plancha Abdominal Clásica", reps: "3 series de 1 minuto", tips: "Al llegar a tu departamento, termina con trabajo isométrico de core." }
+                    { 
+                        name: "Ascenso Continuo (Pisos 1 al 21)", 
+                        tips: "El objetivo es no parar. Mantén un ritmo constante (Zona 2 de cardio). Si necesitas descansar, hazlo en los descansos de los pisos, no a mitad de escalera.", 
+                        image: "https://images.unsplash.com/photo-1570829460005-c0adf874d04a?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 1, reps: "1 ronda completa" },
+                            medio: { series: 1, reps: "1 a 2 rondas" },
+                            dificil: { series: 2, reps: "2 rondas completas" },
+                            muy_dificil: { series: 3, reps: "2 a 3 rondas" }
+                        }
+                    },
+                    { 
+                        name: "Descenso y Recuperación", 
+                        tips: "Bajar 21 pisos daña los meniscos y rodillas a largo plazo. Usa la tecnología a tu favor.", 
+                        image: "https://images.unsplash.com/photo-1580461251754-1ec2202f8e4e?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 1, reps: "Bajar en ascensor" },
+                            medio: { series: 1, reps: "Bajar en ascensor" },
+                            dificil: { series: 1, reps: "Bajar en ascensor" },
+                            muy_dificil: { series: 1, reps: "Bajar en ascensor" }
+                        }
+                    },
+                    { 
+                        name: "Plancha Abdominal Clásica", 
+                        tips: "Al llegar a tu departamento, termina con trabajo isométrico de core.", 
+                        image: "https://images.unsplash.com/photo-1520594357934-e000fc029364?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "40 segundos" },
+                            medio: { series: 3, reps: "1 minuto" },
+                            dificil: { series: 3, reps: "1.5 minutos" },
+                            muy_dificil: { series: 4, reps: "2 minutos" }
+                        }
+                    }
                 ]
             },
             4: {
@@ -194,10 +353,50 @@
                 focus: "Espalda, Bíceps (adaptado), Abdomen",
                 warmup: "Rotaciones de torso, círculos con brazos. Sube 2 pisos.",
                 exercises: [
-                    { name: "Deslizamientos de Espalda (Towel Sliders)", reps: "3 series de 10 reps", tips: "Acuéstate boca abajo, brazos estirados. Finge hacer una dominada deslizando tus manos por el suelo (usa calcetines o toallas en piso liso). Contrae fuerte la espalda." },
-                    { name: "Superman Holds", reps: "3 series de 15 reps (sostener 3s)", tips: "Boca abajo, eleva pecho y piernas del piso simultáneamente." },
-                    { name: "Mountain Climbers", reps: "3 series de 40 segundos", tips: "Ritmo rápido para mantener el ritmo cardíaco alto." },
-                    { name: "Crunch Inverso", reps: "3 series de 15 reps", tips: "Acuéstate boca arriba, levanta la cadera llevando las rodillas al pecho." }
+                    { 
+                        name: "Deslizamientos de Espalda (Towel Sliders)", 
+                        tips: "Acuéstate boca abajo, brazos estirados. Finge hacer una dominada deslizando tus manos por el suelo (usa calcetines o coloca una toalla bajo tus manos en pisos lisos). Contrae fuerte la espalda.", 
+                        image: "https://images.unsplash.com/photo-1598289505326-20d335ae76ac?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "8 reps" },
+                            medio: { series: 3, reps: "10 reps" },
+                            dificil: { series: 4, reps: "12 reps" },
+                            muy_dificil: { series: 5, reps: "15 reps" }
+                        }
+                    },
+                    { 
+                        name: "Superman Holds", 
+                        tips: "Boca abajo, eleva pecho y piernas del piso simultáneamente.", 
+                        image: "https://images.unsplash.com/photo-1552821206-4c5daf29a1b8?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "10 reps (sostener 2s)" },
+                            medio: { series: 3, reps: "15 reps (sostener 3s)" },
+                            dificil: { series: 4, reps: "18 reps (sostener 3s)" },
+                            muy_dificil: { series: 4, reps: "20 reps (sostener 4s)" }
+                        }
+                    },
+                    { 
+                        name: "Mountain Climbers", 
+                        tips: "Mantén un ritmo rápido para elevar tu frecuencia cardíaca.", 
+                        image: "https://images.unsplash.com/photo-1608289685113-75b8c94c3a51?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "30 segundos" },
+                            medio: { series: 3, reps: "40 segundos" },
+                            dificil: { series: 3, reps: "50 segundos" },
+                            muy_dificil: { series: 4, reps: "60 segundos" }
+                        }
+                    },
+                    { 
+                        name: "Crunch Inverso", 
+                        tips: "Acuéstate boca arriba, levanta la cadera llevando las rodillas al pecho.", 
+                        image: "https://images.unsplash.com/photo-1520594357934-e000fc029364?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "10 reps" },
+                            medio: { series: 3, reps: "15 reps" },
+                            dificil: { series: 4, reps: "18 reps" },
+                            muy_dificil: { series: 5, reps: "20 reps" }
+                        }
+                    }
                 ]
             },
             5: {
@@ -206,10 +405,50 @@
                 focus: "Quema de grasa, Acondicionamiento",
                 warmup: "Sube 5 pisos a ritmo moderado. Baja en ascensor.",
                 exercises: [
-                    { name: "Burpees (Sin salto si hay dolor)", reps: "4 series de 10-12 reps", tips: "Ejercicio completo que dispara tu metabolismo." },
-                    { name: "Sentadillas con Salto", reps: "4 series de 15 reps", tips: "Aterriza suavemente para no molestar a los vecinos de abajo." },
-                    { name: "Flexiones Diamante (o cerradas)", reps: "3 series al fallo", tips: "Manos juntas bajo el pecho. Enfocado en tríceps." },
-                    { name: "Finisher: Sprint de Escaleras", reps: "Sube 3 pisos a MÁXIMA velocidad. X 4 veces.", tips: "Baja en ascensor entre cada sprint para recuperar el aliento (1 min descanso)." }
+                    { 
+                        name: "Burpees (Sin salto si hay dolor)", 
+                        tips: "Ejercicio completo que dispara tu metabolismo.", 
+                        image: "https://images.unsplash.com/photo-1550259987-d19ec2f2d366?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "8-10 reps" },
+                            medio: { series: 4, reps: "10-12 reps" },
+                            dificil: { series: 4, reps: "12-15 reps" },
+                            muy_dificil: { series: 5, reps: "15-18 reps" }
+                        }
+                    },
+                    { 
+                        name: "Sentadillas con Salto", 
+                        tips: "Aterriza suavemente para no molestar a los vecinos de abajo.", 
+                        image: "https://images.unsplash.com/photo-1598289505326-20d335ae76ac?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "10 reps" },
+                            medio: { series: 4, reps: "15 reps" },
+                            dificil: { series: 4, reps: "20 reps" },
+                            muy_dificil: { series: 5, reps: "25 reps" }
+                        }
+                    },
+                    { 
+                        name: "Flexiones Diamante (o cerradas)", 
+                        tips: "Manos juntas bajo el pecho. Enfocado en tríceps.", 
+                        image: "https://images.unsplash.com/photo-1597452485969-2b651eaf9a17?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "al fallo" },
+                            medio: { series: 3, reps: "al fallo" },
+                            dificil: { series: 4, reps: "al fallo" },
+                            muy_dificil: { series: 5, reps: "al fallo + 10 reps" }
+                        }
+                    },
+                    { 
+                        name: "Finisher: Sprint de Escaleras", 
+                        tips: "Baja en ascensor entre cada sprint para recuperar el aliento (1 min descanso).", 
+                        image: "https://images.unsplash.com/photo-1570829460005-c0adf874d04a?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 2, reps: "Sube 2 pisos a MÁXIMA velocidad. X 2 veces" },
+                            medio: { series: 3, reps: "Sube 3 pisos a MÁXIMA velocidad. X 4 veces" },
+                            dificil: { series: 4, reps: "Sube 4 pisos a MÁXIMA velocidad. X 4 veces" },
+                            muy_dificil: { series: 5, reps: "Sube 5 pisos a MÁXIMA velocidad. X 5 veces" }
+                        }
+                    }
                 ]
             },
             6: {
@@ -218,8 +457,28 @@
                 focus: "Recuperación",
                 warmup: "Ninguno específico.",
                 exercises: [
-                    { name: "Caminata Ligera", reps: "30-45 minutos", tips: "Camina por tu barrio o parque a un ritmo relajado. Ayuda a la circulación y recuperación." },
-                    { name: "Estiramientos / Yoga Básico", reps: "15 minutos", tips: "Enfócate en estirar cuádriceps y pantorrillas después de usar tantas escaleras en la semana." }
+                    { 
+                        name: "Caminata Ligera", 
+                        tips: "Camina por tu barrio o parque a un ritmo relajado. Ayuda a la circulación y recuperación.", 
+                        image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 1, reps: "20 minutos" },
+                            medio: { series: 1, reps: "30-45 minutos" },
+                            dificil: { series: 1, reps: "45-60 minutos" },
+                            muy_dificil: { series: 1, reps: "60+ minutos" }
+                        }
+                    },
+                    { 
+                        name: "Estiramientos / Yoga Básico", 
+                        tips: "Enfócate en estirar cuádriceps y pantorrillas después de usar tantas escaleras en la semana.", 
+                        image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 1, reps: "10 minutos" },
+                            medio: { series: 1, reps: "15 minutos" },
+                            dificil: { series: 1, reps: "20 minutos" },
+                            muy_dificil: { series: 1, reps: "30 minutos" }
+                        }
+                    }
                 ]
             },
             7: {
@@ -228,12 +487,35 @@
                 focus: "Recuperación del Sistema Nervioso",
                 warmup: "Relajación.",
                 exercises: [
-                    { name: "Día Libre", reps: "0 reps", tips: "Duerme bien, prepárate para la semana. Hoy no hay gimnasio ni escaleras." }
+                    { 
+                        name: "Día Libre", 
+                        tips: "Duerme bien, prepárate para la semana. Hoy no hay gimnasio ni escaleras.", 
+                        image: "https://images.unsplash.com/photo-1444754701371-62afb008d01b?w=400&h=300&fit=crop",
+                        difficulties: {
+                            facil: { series: 1, reps: "Descanso total" },
+                            medio: { series: 1, reps: "Descanso total" },
+                            dificil: { series: 1, reps: "Descanso total" },
+                            muy_dificil: { series: 1, reps: "Descanso total" }
+                        }
+                    }
                 ]
             }
         };
 
         let currentDayId = 1;
+        let currentDifficulty = 'facil'; // Default difficulty level
+
+        // Mapeo de dificultades para mostrar nombres legibles
+        const difficultyNames = {
+            'facil': 'Fácil',
+            'medio': 'Medio',
+            'dificil': 'Difícil',
+            'muy_dificil': 'Muy Difícil'
+        };
+
+        function getDifficultyDisplayName(difficulty) {
+            return difficultyNames[difficulty] || difficulty;
+        }
 
         // --- CORE INTERACTION HANDLING & STATE MANAGEMENT ---
 
@@ -241,6 +523,29 @@
             renderTabs();
             renderDay(1); // Start on Monday
             renderChart();
+            updateDifficultyButtons();
+        }
+
+        function setDifficulty(difficulty) {
+            currentDifficulty = difficulty;
+            updateDifficultyButtons();
+            renderDay(currentDayId); // Re-render current day with new difficulty
+        }
+
+        function updateDifficultyButtons() {
+            const difficulties = ['facil', 'medio', 'dificil', 'muy_dificil'];
+            difficulties.forEach(diff => {
+                const btn = document.getElementById(`difficulty-${diff}`);
+                if (btn) {
+                    if (diff === currentDifficulty) {
+                        btn.classList.remove('inactive');
+                        btn.classList.add('active', 'difficulty-btn');
+                    } else {
+                        btn.classList.remove('active');
+                        btn.classList.add('inactive', 'difficulty-btn');
+                    }
+                }
+            });
         }
 
         function renderTabs() {
@@ -278,27 +583,35 @@
             const contentContainer = document.getElementById('workout-content');
             
             // Generate HTML for exercises
-            const exercisesHTML = data.exercises.map((ex, index) => `
-                <div class="exercise-card bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-start cursor-pointer mb-3" onclick="toggleExercise(this)">
-                    <div class="mt-1 mr-4 flex-shrink-0">
-                        <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center check-circle transition-colors">
-                            <span class="text-white text-xs opacity-0 check-mark">✓</span>
+            const exercisesHTML = data.exercises.map((ex, index) => {
+                const difficulty = ex.difficulties[currentDifficulty] || { series: 1, reps: "sin info" };
+                const repsDisplay = `${difficulty.series} series de ${difficulty.reps}`;
+                
+                return `
+                <div class="exercise-card bg-slate-50 rounded-xl p-4 border border-slate-100 cursor-pointer mb-3 overflow-hidden" onclick="toggleExercise(this)">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-shrink-0 self-start pt-1">
+                            <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center check-circle transition-colors flex-shrink-0">
+                                <span class="text-white text-xs opacity-0 check-mark">✓</span>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-slate-800 text-lg">${ex.name}</h4>
-                        <div class="inline-block bg-slate-200 text-slate-700 text-xs px-2 py-1 rounded font-semibold mt-1 mb-2">
-                            ${ex.reps}
+                        <div class="flex-grow min-w-0">
+                            <h4 class="font-bold text-slate-800 text-lg">${ex.name}</h4>
+                            <div class="inline-block bg-slate-200 text-slate-700 text-xs px-2 py-1 rounded font-semibold mt-1 mb-3">
+                                ${repsDisplay}
+                            </div>
+                            <p class="text-sm text-slate-600 mb-3">${ex.tips}</p>
+                            ${ex.image ? `<img src="${ex.image}" alt="${ex.name}" class="w-full h-48 object-cover rounded-lg border border-slate-200" onError="this.alt='Imagen de ${ex.name}'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 w=%22400%22 h=%22300%22%3E%3Crect fill=%22%23e2e8f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23787f88%22 font-size=%2224%22 font-family=%22Arial%22%3EImagen: ${ex.name}%3C/text%3E%3C/svg%3E'">` : ''}
                         </div>
-                        <p class="text-sm text-slate-600">${ex.tips}</p>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
 
             contentContainer.innerHTML = `
                 <div class="mb-6 fade-in">
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="text-2xl font-bold text-teal-700">${data.title}</h3>
+                        <span class="text-sm font-semibold text-slate-500">Nivel: <span class="difficulty-badge ${currentDifficulty} px-2 py-1">${getDifficultyDisplayName(currentDifficulty)}</span></span>
                     </div>
                     <p class="text-sm font-medium text-slate-500 mb-4 uppercase tracking-wider">Foco: ${data.focus}</p>
                     
